@@ -10,21 +10,24 @@ include 'dbh.inc.php';
 
 if (isset($_POST['submit'])) {
 
+	$data = "";
 	$charname = $_POST['charname'];
 	$realmname = $_POST['realmname'];
 
-//	$site = file_get_contents("https://eu.api.battle.net/wow/character/$realmname/$charname?locale=en_GB&apikey=kzda7n5gg576nefk976qhvn84cs8u6w6");
 
-	$url = "https://eu.api.battle.net/wow/character/$realmname/$charname?locale=en_GB&apikey=kzda7n5gg576nefk976qhvn84cs8u6w6";
-	//echo $url;
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$data = curl_exec($ch);
-	curl_close($ch);
-	//echo $data;
+	function geturldata($url)
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		return $data;
+	}
 
-	$decoded = json_decode($data);
+
+
+	$decoded = json_decode(geturldata("https://eu.api.battle.net/wow/character/$realmname/$charname?locale=en_GB&apikey=kzda7n5gg576nefk976qhvn84cs8u6w6"));
 	echo ($decoded->name);
 	echo " ";
 	echo ($decoded->level);
@@ -76,14 +79,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	// uzmi json za SVE mounte
-	$allmounts = "https://eu.api.battle.net/wow/mount/?locale=en_GB&apikey=kzda7n5gg576nefk976qhvn84cs8u6w6";
-	$crl = curl_init();
-	curl_setopt($crl, CURLOPT_URL, $allmounts);
-	curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
-	$mountdata = curl_exec($crl);
-	curl_close($crl);
-	$mountarray = json_decode($mountdata, true);
-	//print_r ($mountarray);
+	$mountarray = json_decode(geturldata("https://eu.api.battle.net/wow/mount/?locale=en_GB&apikey=kzda7n5gg576nefk976qhvn84cs8u6w6"), true);
 
 
 	// KOD ZA UBACIVANJE SVIH MOUNTA U DB
@@ -110,13 +106,7 @@ if (isset($_POST['submit'])) {
 */
 
 	// uzmi json za trenutno OBTAINED mounte
-	$urll = "https://eu.api.battle.net/wow/character/The-Maelstrom/vanjavk?fields=mounts&locale=en_GB&apikey=kzda7n5gg576nefk976qhvn84cs8u6w6";
-	$chh = curl_init();
-	curl_setopt($chh, CURLOPT_URL, $urll);
-	curl_setopt($chh, CURLOPT_RETURNTRANSFER, true);
-	$dataa = curl_exec($chh);
-	curl_close($chh);
-	$decodedd = json_decode($dataa, true);
+	$decodedd = json_decode(geturldata("https://eu.api.battle.net/wow/character/$realmname/$charname?fields=mounts&locale=en_GB&apikey=kzda7n5gg576nefk976qhvn84cs8u6w6"), true);
 
 	$mountarray2=$mountarray;
 
