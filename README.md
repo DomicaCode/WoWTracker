@@ -7,4 +7,4 @@ To use - You have to import mounts.sql as it contains all the mounts available, 
 
 Database used - MySQL, if you cannot import the .sql files, there is a chunk of code in charinfo.inc.php that fills up your database with all of the mounts.
 
-See it live - http://51.38.36.124/wowtracker
+See it live - https://domica.xyz/WoWTracker/
